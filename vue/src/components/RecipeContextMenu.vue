@@ -1,60 +1,48 @@
 <template>
     <div>
         <div class="dropdown d-print-none">
-            <a class="btn shadow-none" href="javascript:void(0);" role="button" id="dropdownMenuLink"
-               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="btn shadow-none" href="javascript:void(0);" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-ellipsis-v fa-lg"></i>
             </a>
 
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" :href="resolveDjangoUrl('edit_recipe', recipe.id)"><i
-                    class="fas fa-pencil-alt fa-fw"></i> {{ $t("Edit") }}</a>
+                <a class="dropdown-item" :href="resolveDjangoUrl('edit_recipe', recipe.id)"><i class="fas fa-pencil-alt fa-fw"></i> {{ $t("Edit") }}</a>
 
-                <a class="dropdown-item" :href="resolveDjangoUrl('edit_convert_recipe', recipe.id)"
-                   v-if="!recipe.internal"><i class="fas fa-exchange-alt fa-fw"></i> {{ $t("convert_internal") }}</a>
+                <a class="dropdown-item" :href="resolveDjangoUrl('edit_convert_recipe', recipe.id)" v-if="!recipe.internal"><i class="fas fa-exchange-alt fa-fw"></i> {{ $t("convert_internal") }}</a>
 
                 <a href="javascript:void(0);">
-                    <button class="dropdown-item" @click="$bvModal.show(`id_modal_add_book_${modal_id}`)"><i
-                        class="fas fa-bookmark fa-fw"></i> {{ $t("Manage_Books") }}
-                    </button>
+                    <button class="dropdown-item" @click="$bvModal.show(`id_modal_add_book_${modal_id}`)"><i class="fas fa-bookmark fa-fw"></i> {{ $t("Manage_Books") }}</button>
                 </a>
 
-                <a class="dropdown-item"
-                   :href="`${resolveDjangoUrl('view_shopping')}?r=[${recipe.id},${servings_value}]`"
-                   v-if="recipe.internal" target="_blank" rel="noopener noreferrer">
+                <a class="dropdown-item" :href="`${resolveDjangoUrl('view_shopping')}?r=[${recipe.id},${servings_value}]`" v-if="recipe.internal" target="_blank" rel="noopener noreferrer">
                     <i class="fas fa-shopping-cart fa-fw"></i> {{ $t("Add_to_Shopping") }}
                 </a>
-                <a class="dropdown-item" v-if="recipe.internal" @click="addToShopping" href="#"> <i
-                    class="fas fa-shopping-cart fa-fw"></i> {{ $t("create_shopping_new") }} </a>
+                <a class="dropdown-item" v-if="recipe.internal" @click="addToShopping" href="#"> <i class="fas fa-shopping-cart fa-fw"></i> {{ $t("create_shopping_new") }} </a>
 
-                <a class="dropdown-item" @click="createMealPlan" href="javascript:void(0);"><i
-                    class="fas fa-calendar fa-fw"></i> {{ $t("Add_to_Plan") }} </a>
+                <a class="dropdown-item" @click="createMealPlan" href="javascript:void(0);"><i class="fas fa-calendar fa-fw"></i> {{ $t("Add_to_Plan") }} </a>
 
                 <a href="javascript:void(0);">
-                    <button class="dropdown-item" @click="$bvModal.show(`id_modal_cook_log_${modal_id}`)"><i
-                        class="fas fa-clipboard-list fa-fw"></i> {{ $t("Log_Cooking") }}
-                    </button>
+                    <button class="dropdown-item" @click="$bvModal.show(`id_modal_cook_log_${modal_id}`)"><i class="fas fa-clipboard-list fa-fw"></i> {{ $t("Log_Cooking") }}</button>
                 </a>
 
                 <a href="javascript:void(0);">
-                    <button class="dropdown-item" onclick="window.print()"><i class="fas fa-print fa-fw"></i>
+                    <button class="dropdown-item" onclick="window.print()">
+                        <i class="fas fa-print fa-fw"></i>
                         {{ $t("Print") }}
                     </button>
                 </a>
 
-                <a class="dropdown-item" :href="resolveDjangoUrl('view_export') + '?r=' + recipe.id" target="_blank"
-                   rel="noopener noreferrer"><i class="fas fa-file-export fa-fw"></i> {{ $t("Export") }}</a>
+                <a class="dropdown-item" :href="resolveDjangoUrl('view_export') + '?r=' + recipe.id" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-export fa-fw"></i> {{ $t("Export") }}</a>
 
                 <a href="javascript:void(0);">
-                    <button class="dropdown-item" @click="pinRecipe()"><i class="fas fa-thumbtack fa-fw"></i>
+                    <button class="dropdown-item" @click="pinRecipe()">
+                        <i class="fas fa-thumbtack fa-fw"></i>
                         {{ $t("Pin") }}
                     </button>
                 </a>
 
                 <a href="javascript:void(0);">
-                    <button class="dropdown-item" @click="createShareLink()" v-if="recipe.internal"><i
-                        class="fas fa-share-alt fa-fw"></i> {{ $t("Share") }}
-                    </button>
+                    <button class="dropdown-item" @click="createShareLink()" v-if="recipe.internal"><i class="fas fa-share-alt fa-fw"></i> {{ $t("Share") }}</button>
                 </a>
             </div>
         </div>
@@ -66,17 +54,10 @@
             <div class="row">
                 <div class="col col-md-12">
                     <label v-if="recipe_share_link !== undefined">{{ $t("Public share link") }}</label>
-                    <input ref="share_link_ref" class="form-control" v-model="recipe_share_link"/>
-                    <b-button class="mt-2 mb-3 d-none d-md-inline" variant="secondary"
-                              @click="$bvModal.hide(`modal-share-link_${modal_id}`)">{{ $t("Close") }}
-                    </b-button>
-                    <b-button class="mt-2 mb-3 ml-md-2" variant="primary" @click="copyShareLink()">{{
-                            $t("Copy")
-                        }}
-                    </b-button>
-                    <b-button class="mt-2 mb-3 ml-2 float-right" variant="success" @click="shareIntend()">{{
-                            $t("Share")
-                        }} <i class="fa fa-share-alt"></i></b-button>
+                    <input ref="share_link_ref" class="form-control" v-model="recipe_share_link" />
+                    <b-button class="mt-2 mb-3 d-none d-md-inline" variant="secondary" @click="$bvModal.hide(`modal-share-link_${modal_id}`)">{{ $t("Close") }} </b-button>
+                    <b-button class="mt-2 mb-3 ml-md-2" variant="primary" @click="copyShareLink()">{{ $t("Copy") }} </b-button>
+                    <b-button class="mt-2 mb-3 ml-2 float-right" variant="success" @click="shareIntend()">{{ $t("Share") }} <i class="fa fa-share-alt"></i></b-button>
                 </div>
             </div>
         </b-modal>
@@ -91,12 +72,12 @@
             :allow_delete="false"
             :modal_title="$t('Create_Meal_Plan_Entry')"
         ></meal-plan-edit-modal>
-        <shopping-modal :recipe="recipe" :servings="servings_value" :modal_id="modal_id"/>
+        <shopping-modal v-if="modal_id" :recipe="recipe" :servings="servings_value" :modal_id="modal_id" />
     </div>
 </template>
 
 <script>
-import {makeToast, resolveDjangoUrl, ResolveUrlMixin, StandardToasts} from "@/utils/utils"
+import { makeToast, resolveDjangoUrl, ResolveUrlMixin, StandardToasts } from "@/utils/utils"
 import CookLog from "@/components/CookLog"
 import axios from "axios"
 import AddRecipeToBook from "@/components/Modals/AddRecipeToBook"
@@ -104,7 +85,7 @@ import MealPlanEditModal from "@/components/MealPlanEditModal"
 import ShoppingModal from "@/components/Modals/ShoppingModal"
 import moment from "moment"
 import Vue from "vue"
-import {ApiApiFactory} from "@/utils/openapi/api"
+import { ApiApiFactory } from "@/utils/openapi/api"
 
 Vue.prototype.moment = moment
 
@@ -121,7 +102,7 @@ export default {
         return {
             servings_value: 0,
             recipe_share_link: undefined,
-            modal_id: this.recipe.id + Math.round(Math.random() * 100000),
+            modal_id: undefined,
             options: {
                 entryEditing: {
                     date: null,
@@ -151,9 +132,9 @@ export default {
     },
     methods: {
         pinRecipe: function () {
-            let pinnedRecipes = JSON.parse(localStorage.getItem('pinned_recipes')) || []
-            pinnedRecipes.push({id: this.recipe.id, name: this.recipe.name})
-            localStorage.setItem('pinned_recipes', JSON.stringify(pinnedRecipes))
+            let pinnedRecipes = JSON.parse(localStorage.getItem("pinned_recipes")) || []
+            pinnedRecipes.push({ id: this.recipe.id, name: this.recipe.name })
+            localStorage.setItem("pinned_recipes", JSON.stringify(pinnedRecipes))
         },
         saveMealPlan: function (entry) {
             entry.date = moment(entry.date).format("YYYY-MM-DD")
@@ -202,6 +183,7 @@ export default {
             navigator.share(shareData)
         },
         addToShopping() {
+            this.modal_id = this.recipe.id + Math.round(Math.random() * 100000)
             this.$bvModal.show(`shopping_${this.modal_id}`)
         },
     },

@@ -654,7 +654,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
     schema = QueryParamAutoSchema()
 
     def get_queryset(self):
-
         if self.detail:
             self.queryset = self.queryset.filter(space=self.request.space)
             return super().get_queryset()
