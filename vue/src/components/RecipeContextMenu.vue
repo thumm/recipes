@@ -72,7 +72,7 @@
             :allow_delete="false"
             :modal_title="$t('Create_Meal_Plan_Entry')"
         ></meal-plan-edit-modal>
-        <shopping-modal v-if="modal_id" :recipe="recipe" :servings="servings_value" :modal_id="modal_id" />
+        <shopping-modal v-if="recipe" :recipe="recipe" :servings="servings_value" :modal_id="modal_id" />
     </div>
 </template>
 
@@ -102,7 +102,7 @@ export default {
         return {
             servings_value: 0,
             recipe_share_link: undefined,
-            modal_id: undefined,
+            modal_id: Math.round(Math.random() * 100000),
             options: {
                 entryEditing: {
                     date: null,
@@ -183,7 +183,6 @@ export default {
             navigator.share(shareData)
         },
         addToShopping() {
-            this.modal_id = this.recipe.id + Math.round(Math.random() * 100000)
             this.$bvModal.show(`shopping_${this.modal_id}`)
         },
     },

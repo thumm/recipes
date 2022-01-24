@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-modal :id="`shopping_${this.modal_id}`" hide-footer @show="loadRecipe">
+        <b-modal :id="`shopping_${this.modal_id}`" hide-footer @shown="loadRecipe">
             <template v-slot:modal-title
                 ><h4>{{ $t("Add_Servings_to_Shopping", { servings: recipe_servings }) }}</h4></template
             >
@@ -91,7 +91,6 @@ export default {
         }
     },
     mounted() {
-        console.log("shopping modal")
         this.recipe_servings = this.servings
     },
     computed: {
@@ -100,18 +99,19 @@ export default {
         },
     },
     watch: {
-        recipe: {
-            handler() {
-                this.loadRecipe()
-            },
-            deep: true,
-        },
+        // recipe: {
+        //     handler() {
+        //         this.loadRecipe()
+        //     },
+        //     deep: true,
+        // },
         servings: function (newVal) {
             this.recipe_servings = parseInt(newVal)
         },
     },
     methods: {
         loadRecipe: function () {
+            console.log("loading recipe")
             this.add_shopping = []
             this.related_recipes = []
             let apiClient = new ApiApiFactory()
