@@ -3,7 +3,7 @@
         v-model="selected_objects"
         :options="objects"
         :close-on-select="true"
-        :clear-on-select="true"
+        :clear-on-select="multiple"
         :hide-selected="multiple"
         :preserve-search="true"
         :internal-search="false"
@@ -48,7 +48,7 @@ export default {
         },
         label: { type: String, default: "name" },
         parent_variable: { type: String, default: undefined },
-        limit: { type: Number, default: 10 },
+        limit: { type: Number, default: 25 },
         sticky_options: {
             type: Array,
             default() {
@@ -80,7 +80,11 @@ export default {
             this.selected_objects = newVal
         },
         clear: function (newVal, oldVal) {
-            this.selected_objects = []
+            if (this.multiple) {
+                this.selected_objects = []
+            } else {
+                this.selected_objects = undefined
+            }
         },
     },
     mounted() {
@@ -129,7 +133,7 @@ export default {
                         }
                     })
                 }
-                this.removeMissingItems()
+                // this.removeMissingItems()  # This removes items that are on another page of results
             })
         },
         selectionChanged: function () {
@@ -142,13 +146,13 @@ export default {
                 this.search("")
             }, 750)
         },
-        removeMissingItems: function () {
-            if (this.multiple) {
-                this.selected_objects = this.selected_objects.filter((x) => !this.objects.map((y) => y.id).includes(x))
-            } else {
-                this.selected_objects = this.objects.filter((x) => x.id === this.selected_objects.id)[0]
-            }
-        },
+        // removeMissingItems: function () {
+        //     if (this.multiple) {
+        //         this.selected_objects = this.selected_objects.filter((x) => !this.objects.map((y) => y.id).includes(x))
+        //     } else {
+        //         this.selected_objects = this.objects.filter((x) => x.id === this.selected_objects.id)[0]
+        //     }
+        // },
     },
 }
 </script>
