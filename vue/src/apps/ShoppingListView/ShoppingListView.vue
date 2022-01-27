@@ -432,7 +432,10 @@
                                 <div class="col col-md-6 text-right">
                                     <generic-multiselect
                                         size="sm"
-                                        @change="settings.shopping_share = $event.val;saveSettings()"
+                                        @change="
+                                            settings.shopping_share = $event.val
+                                            saveSettings()
+                                        "
                                         :model="Models.USER"
                                         :initial_selection="settings.shopping_share"
                                         label="username"
@@ -1096,7 +1099,6 @@ export default {
                     if (!autosync) {
                         if (results.data?.length) {
                             this.items = results.data
-                            console.log(this.items)
                         } else {
                             console.log("no data returned")
                         }
